@@ -24,7 +24,7 @@ CALDERA_DIR="/opt/caldera/app"
 CALDERA_VERSION="${CALDERA_VERSION:-5.0.0}"   # can be overridden via env var
 CALDERA_PORT="${CALDERA_PORT:-8888}"
 CALDERA_USER="${CALDERA_USER:-root}"          # simplest for lab use; see note below
-BUILD_UI="${BUILD_UI:-true}"                  # true/false
+BUILD_UI="${BUILD_UI:-false}"                 # true/false
 INSECURE_FLAG="--insecure"                    # use "--insecure" (recommended format)
 
 # -----------------------------------------------------------------------------
