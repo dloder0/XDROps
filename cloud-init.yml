@@ -20,7 +20,6 @@ write_files:
       set -euo pipefail
 
       LOG_BOOTSTRAP="/var/log/caldera-bootstrap.log"
-      LOG_INSTALL="/var/log/caldera-install.log"
 
       SCRIPT_URL="https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh"
 
@@ -28,17 +27,14 @@ write_files:
 
       mkdir -p /opt/caldera
 
-      curl -fsSL "$SCRIPT_URL" -o /opt/caldera/install-caldera.sh \
-        2>&1 | tee -a "$LOG_BOOTSTRAP"
+      curl -fsSL "$SCRIPT_URL" -o /opt/caldera/install-caldera.sh
 
       chmod +x /opt/caldera/install-caldera.sh
 
       echo "[bootstrap] Running installer..." | tee -a "$LOG_BOOTSTRAP"
 
       # Capture ALL output from install script
-      /opt/caldera/install-caldera.sh \
-        > >(tee -a "$LOG_INSTALL") \
-        2> >(tee -a "$LOG_INSTALL" >&2)
+      /opt/caldera/install-caldera.sh
 
       echo "[bootstrap] Completed." | tee -a "$LOG_BOOTSTRAP"
 
