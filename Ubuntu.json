@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.39.26.7824",
-      "templateHash": "5929404585600906631"
+      "templateHash": "12421311862553742443"
     }
   },
   "parameters": {
@@ -27,13 +27,13 @@
       "type": "string",
       "defaultValue": "azureuser",
       "metadata": {
-        "description": "Admin username for SSH"
+        "description": "Admin username for password login"
       }
     },
-    "sshPublicKey": {
-      "type": "string",
+    "adminPassword": {
+      "type": "securestring",
       "metadata": {
-        "description": "SSH public key (OpenSSH format)"
+        "description": "Admin password for the VM (do not hardcode; supply at deploy time)"
       }
     },
     "vmSize": {
@@ -47,7 +47,7 @@
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Expose CALDERA UI port (8888) to the Internet. Recommended: false (use SSH tunnel)."
+        "description": "Expose CALDERA UI port (8888) to the Internet. Recommended: false (use SSH tunnel or Bastion)."
       }
     },
     "calderaPort": {
@@ -182,17 +182,10 @@
         "osProfile": {
           "computerName": "[parameters('vmName')]",
           "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
           "customData": "[variables('cloudInit')]",
           "linuxConfiguration": {
-            "disablePasswordAuthentication": true,
-            "ssh": {
-              "publicKeys": [
-                {
-                  "path": "[format('/home/{0}/.ssh/authorized_keys', parameters('adminUsername'))]",
-                  "keyData": "[parameters('sshPublicKey')]"
-                }
-              ]
-            }
+            "disablePasswordAuthentication": false
           }
         },
         "storageProfile": {
@@ -205,6 +198,7 @@
           "osDisk": {
             "name": "[variables('osDiskName')]",
             "createOption": "FromImage",
+            "caching": "ReadWrite",
             "managedDisk": {
               "storageAccountType": "Premium_LRS"
             }

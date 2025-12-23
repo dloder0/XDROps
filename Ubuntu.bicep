@@ -5,21 +5,23 @@ param location string = resourceGroup().location
 @description('VM name')
 param vmName string = 'caldera-vm'
 
-@description('Admin username for SSH')
+@description('Admin username for password login')
 param adminUsername string = 'azureuser'
 
-@description('SSH public key (OpenSSH format)')
-param sshPublicKey string
+@secure()
+@description('Admin password for the VM (do not hardcode; supply at deploy time)')
+param adminPassword string
 
 @description('VM size')
 param vmSize string = 'Standard_B2s'
 
-@description('Expose CALDERA UI port (8888) to the Internet. Recommended: false (use SSH tunnel).')
+@description('Expose CALDERA UI port (8888) to the Internet. Recommended: false (use SSH tunnel or Bastion).')
 param exposeCalderaToInternet bool = false
 
 @description('CALDERA UI port')
 param calderaPort int = 8888
 
+// Networking names
 var vnetName = '${vmName}-vnet'
 var subnetName = 'default'
 var nsgName = '${vmName}-nsg'
@@ -27,8 +29,8 @@ var pipName = '${vmName}-pip'
 var nicName = '${vmName}-nic'
 var osDiskName = '${vmName}-osdisk'
 
-// cloud-init is stored in-repo and embedded at compile time
-var cloudInit = base64(loadTextContent('cloud-init.yml'))
+// Cloud-init is stored in repo and embedded at compile time
+var cloudInit = base64(loadTextContent('./cloud-init.yml'))
 
 resource nsg 'Microsoft.Network/networkSecurityGroups@2024-05-01' = {
   name: nsgName
@@ -130,17 +132,10 @@ resource vm 'Microsoft.Compute/virtualMachines@2024-07-01' = {
     osProfile: {
       computerName: vmName
       adminUsername: adminUsername
+      adminPassword: adminPassword
       customData: cloudInit
       linuxConfiguration: {
-        disablePasswordAuthentication: true
-        ssh: {
-          publicKeys: [
-            {
-              path: '/home/${adminUsername}/.ssh/authorized_keys'
-              keyData: sshPublicKey
-            }
-          ]
-        }
+        disablePasswordAuthentication: false
       }
     }
     storageProfile: {
@@ -153,6 +148,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2024-07-01' = {
       osDisk: {
         name: osDiskName
         createOption: 'FromImage'
+        caching: 'ReadWrite'
         managedDisk: {
           storageAccountType: 'Premium_LRS'
         }
