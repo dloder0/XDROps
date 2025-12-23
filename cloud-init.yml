@@ -1,8 +1,8 @@
 
 #cloud-config
+
 package_update: true
 package_upgrade: true
-
 packages:
   - curl
   - ca-certificates
@@ -19,17 +19,28 @@ write_files:
       #!/usr/bin/env bash
       set -euo pipefail
 
+      LOG_BOOTSTRAP="/var/log/caldera-bootstrap.log"
+      LOG_INSTALL="/var/log/caldera-install.log"
+
       SCRIPT_URL="https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh"
 
-      echo "[bootstrap] Downloading installer from: ${SCRIPT_URL}"
+      echo "[bootstrap] Downloading installer from $SCRIPT_URL" | tee -a "$LOG_BOOTSTRAP"
+
       mkdir -p /opt/caldera
-      curl -fsSL "${SCRIPT_URL}" -o /opt/caldera/install-caldera.sh
+
+      curl -fsSL "$SCRIPT_URL" -o /opt/caldera/install-caldera.sh \
+        2>&1 | tee -a "$LOG_BOOTSTRAP"
+
       chmod +x /opt/caldera/install-caldera.sh
 
-      echo "[bootstrap] Running installer..."
-      /opt/caldera/install-caldera.sh
+      echo "[bootstrap] Running installer..." | tee -a "$LOG_BOOTSTRAP"
 
-      echo "[bootstrap] Complete."
+      # Capture ALL output from install script
+      /opt/caldera/install-caldera.sh \
+        > >(tee -a "$LOG_INSTALL") \
+        2> >(tee -a "$LOG_INSTALL" >&2)
+
+      echo "[bootstrap] Completed." | tee -a "$LOG_BOOTSTRAP"
 
 runcmd:
   - [ bash, -lc, "/opt/caldera/bootstrap.sh" ]

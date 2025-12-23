@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.39.26.7824",
-      "templateHash": "13921197868575375754"
+      "templateHash": "5929404585600906631"
     }
   },
   "parameters": {
@@ -59,7 +59,7 @@
     }
   },
   "variables": {
-    "$fxv#0": "\r\n#cloud-config\r\npackage_update: true\r\npackage_upgrade: true\r\n\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from: ${SCRIPT_URL}\"\r\n      mkdir -p /opt/caldera\r\n      curl -fsSL \"${SCRIPT_URL}\" -o /opt/caldera/install-caldera.sh\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\"\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Complete.\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+    "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n      LOG_INSTALL=\"/var/log/caldera-install.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh \\\r\n        2>&1 | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh \\\r\n        > >(tee -a \"$LOG_INSTALL\") \\\r\n        2> >(tee -a \"$LOG_INSTALL\" >&2)\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
     "vnetName": "[format('{0}-vnet', parameters('vmName'))]",
     "subnetName": "default",
     "nsgName": "[format('{0}-nsg', parameters('vmName'))]",
