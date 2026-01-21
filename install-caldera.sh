@@ -38,8 +38,23 @@ mkdir -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 apt update
+
+echo "============================================================================="
+echo "Docker install steps starting at $(date -Is)"
+echo "============================================================================="
+
 apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+echo "============================================================================="
+echo "Caldera install steps starting at $(date -Is)"
+echo "============================================================================="
+
 git clone https://github.com/mitre/caldera.git --recursive
+
+echo "============================================================================="
+echo "Docker build caldera steps starting at $(date -Is)"
+echo "============================================================================="
+
 cd caldera
 docker build . --build-arg WIN_BUILD=true -t caldera:latest
 docker run -d --name caldera_mir -p 8888:8888 caldera:latest
@@ -56,3 +71,7 @@ docker stop caldera_mir
 docker run -d --name caldera_new -p 8888:8888 caldera_update:latest
 docker cp caldera_new:/usr/src/app/conf/local.yml /root/local.yml
 docker update --restart unless-stopped caldera_new
+
+echo "============================================================================="
+echo "install-caldera.sh complete at $(date -Is)"
+echo "============================================================================="

@@ -11,6 +11,7 @@ packages:
   - python3-venv
   - nodejs
   - npm
+  - apt-transport-https
 
 write_files:
   - path: /opt/caldera/bootstrap.sh
