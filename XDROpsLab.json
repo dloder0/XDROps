@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.39.26.7824",
-      "templateHash": "14621342005256100647"
+      "templateHash": "13556903076359244087"
     }
   },
   "parameters": {
@@ -405,7 +405,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -535,7 +535,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",
@@ -773,7 +773,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -903,7 +903,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",
@@ -1142,7 +1142,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -1272,7 +1272,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",
@@ -1511,7 +1511,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -1641,7 +1641,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",
@@ -1879,7 +1879,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -2009,7 +2009,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",
@@ -2248,7 +2248,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -2378,7 +2378,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",
@@ -2617,7 +2617,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -2747,7 +2747,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",
@@ -2986,7 +2986,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -3116,7 +3116,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",
@@ -3354,7 +3354,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -3484,7 +3484,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",
@@ -3723,7 +3723,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -3853,7 +3853,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",
@@ -4088,7 +4088,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -4218,7 +4218,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",
@@ -4453,7 +4453,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.39.26.7824",
-              "templateHash": "563894104844388985"
+              "templateHash": "16022520726940392267"
             }
           },
           "parameters": {
@@ -4583,7 +4583,7 @@
             }
           },
           "variables": {
-            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
+            "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/caldera/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/caldera-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/caldera\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/caldera/install-caldera.sh\r\n\r\n      chmod +x /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/caldera/install-caldera.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/caldera/bootstrap.sh\" ]\r\n",
             "isWindows": "[startsWith(parameters('imageReference').Publisher, 'MicrosoftWindows')]",
             "adSubnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnetName'))]",
             "vmPublicIPName": "[format('{0}PublicIP', parameters('vmName'))]",

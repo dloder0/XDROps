@@ -14,30 +14,41 @@ packages:
   - apt-transport-https
 
 write_files:
-  - path: /opt/caldera/bootstrap.sh
+  - path: /opt/bootstrap/bootstrap.sh
     permissions: "0755"
     content: |
       #!/usr/bin/env bash
       set -euo pipefail
 
-      LOG_BOOTSTRAP="/var/log/caldera-bootstrap.log"
+      LOG_BOOTSTRAP="/var/log/bootstrap.log"
 
-      SCRIPT_URL="https://raw.githubusercontent.com/dloder0/XDROps/main/install-caldera.sh"
+      BASE_URL="https://raw.githubusercontent.com/dloder0/XDROps/main"
+      HOSTNAME="$(hostname)"
+      SOURCE_FILE="${HOSTNAME}.sh"
+      REMOTE_URL="${BASE_URL}/${SOURCE_FILE}"
+      DEST_DIR="/opt/bootstrap"
+      DEST_PATH="${DEST_DIR}/install.sh"
 
-      echo "[bootstrap] Downloading installer from $SCRIPT_URL" | tee -a "$LOG_BOOTSTRAP"
+      echo "[bootstrap] Downloading installer from $REMOTE_URL" | tee -a "$LOG_BOOTSTRAP"
 
-      mkdir -p /opt/caldera
+      mkdir -p "$DEST_DIR"
 
-      curl -fsSL "$SCRIPT_URL" -o /opt/caldera/install-caldera.sh
-
-      chmod +x /opt/caldera/install-caldera.sh
+      if curl --output /dev/null --silent --head --fail "$REMOTE_URL"; then
+          echo "[bootstrap] Download proceeding..." | tee -a "$LOG_BOOTSTRAP"
+          curl -fsSL "$REMOTE_URL" -o "$DEST_PATH"
+          chmod +x "$DEST_PATH"
+      else
+          # No matching file found — exit quietly
+          echo "[bootstrap] Download file not available in repo..." | tee -a "$LOG_BOOTSTRAP"
+          exit 0
+      fi
 
       echo "[bootstrap] Running installer..." | tee -a "$LOG_BOOTSTRAP"
 
       # Capture ALL output from install script
-      /opt/caldera/install-caldera.sh
+      /opt/bootstrap/install.sh
 
       echo "[bootstrap] Completed." | tee -a "$LOG_BOOTSTRAP"
 
 runcmd:
-  - [ bash, -lc, "/opt/caldera/bootstrap.sh" ]
+  - [ bash, -lc, "/opt/bootstrap/bootstrap.sh" ]
