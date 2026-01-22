@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.39.26.7824",
-      "templateHash": "15303119464005724006"
+      "templateHash": "14338285769052111521"
     }
   },
   "parameters": {
@@ -246,7 +246,8 @@
       "properties": {
         "dhcpOptions": {
           "dnsServers": [
-            "192.168.1.10"
+            "192.168.1.10",
+            "168.63.129.16"
           ]
         },
         "subnets": [
