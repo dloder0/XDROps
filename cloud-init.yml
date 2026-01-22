@@ -22,33 +22,35 @@ write_files:
 
       LOG_BOOTSTRAP="/var/log/bootstrap.log"
 
-      BASE_URL="https://raw.githubusercontent.com/dloder0/XDROps/main"
-      HOSTNAME="$(hostname)"
-      SOURCE_FILE="${HOSTNAME}.sh"
-      REMOTE_URL="${BASE_URL}/${SOURCE_FILE}"
-      DEST_DIR="/opt/bootstrap"
-      DEST_PATH="${DEST_DIR}/install.sh"
+      ZIP_URL="https://raw.githubusercontent.com/dloder0/XDROps/main/XDROps.tar.gz"
 
-      echo "[bootstrap] Downloading installer from $REMOTE_URL" | tee -a "$LOG_BOOTSTRAP"
+      echo "[bootstrap] Downloading installer package from $ZIP_URL" | tee -a "$LOG_BOOTSTRAP"
 
-      mkdir -p "$DEST_DIR"
+      mkdir -p /opt/bootstrap
 
-      if curl --output /dev/null --silent --head --fail "$REMOTE_URL"; then
-          echo "[bootstrap] Download proceeding..." | tee -a "$LOG_BOOTSTRAP"
-          curl -fsSL "$REMOTE_URL" -o "$DEST_PATH"
-          chmod +x "$DEST_PATH"
+      curl -fsSL "$ZIP_URL" -o /opt/bootstrap/XDROps.tar.gz
+
+      tar -xzf /opt/bootstrap/XDROps.tar.gz -C /opt/bootstrap
+
+      # --- Determine hostname ---
+      HOSTNAME_MATCH=$(hostname)
+
+      echo "[bootstrap] System hostname: $HOSTNAME_MATCH" | tee -a "$LOG_BOOTSTRAP"
+
+      # --- Look for a matching file ---
+      MATCHING_FILE="/opt/bootstrap/$HOSTNAME_MATCH.sh"
+
+      if [[ -f "$MATCHING_FILE" ]]; then
+          echo "[bootstrap] Found matching file: $MATCHING_FILE" | tee -a "$LOG_BOOTSTRAP"
+          chmod +x "$MATCHING_FILE"
+          echo "Running $MATCHING_FILE..."
+          "$MATCHING_FILE"
       else
-          # No matching file found — exit quietly
-          echo "[bootstrap] Download file not available in repo..." | tee -a "$LOG_BOOTSTRAP"
-          exit 0
+          echo "[bootstrap] No file matching hostname found." | tee -a "$LOG_BOOTSTRAP"
       fi
 
-      echo "[bootstrap] Running installer..." | tee -a "$LOG_BOOTSTRAP"
-
-      # Capture ALL output from install script
-      /opt/bootstrap/install.sh
-
       echo "[bootstrap] Completed." | tee -a "$LOG_BOOTSTRAP"
+
 
 runcmd:
   - [ bash, -lc, "/opt/bootstrap/bootstrap.sh" ]
