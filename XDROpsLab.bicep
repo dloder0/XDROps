@@ -15,7 +15,6 @@ var adminPassword = '${uniqueString(subscription().subscriptionId)}E#w2e'
 var BastionName = 'Bastion'
 var BastionPublicIPName = 'Bastion-ip'
 var location = resourceGroup().location
-//In the ASDefendLabUI.json file we restrict the allowed regions to only those that currently have Sentinel and do not have MCAPS quotas on Function Apps
 //https://msazure.visualstudio.com/AzureWiki/_wiki/wikis/AzureWiki.wiki/328058/CRI-requirements-for-AZ-requests-Quota-and-Offer-restrictions-in-locked-down-regions?anchor=**function-app-on-consumption-plan-(y1)-quota-request**%3A
 //Many regions still will not work by default as the MCAPS subscriptions also have region restrictions for the VMs, but I left the regions other than East US 2 in, just in case.
 
