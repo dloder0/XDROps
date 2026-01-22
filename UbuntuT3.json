@@ -1,0 +1,234 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.39.26.7824",
+      "templateHash": "18401935106133621529"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Deployment location"
+      }
+    },
+    "vmName": {
+      "type": "string",
+      "defaultValue": "caldera-vm",
+      "metadata": {
+        "description": "VM name"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "azureuser",
+      "metadata": {
+        "description": "Admin username for password login"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Admin password for the VM (do not hardcode; supply at deploy time)"
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_B2s",
+      "metadata": {
+        "description": "VM size"
+      }
+    },
+    "exposeCalderaToInternet": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Expose CALDERA UI port (8888) to the Internet. Recommended: false (use SSH tunnel or Bastion)."
+      }
+    },
+    "calderaPort": {
+      "type": "int",
+      "defaultValue": 8888,
+      "metadata": {
+        "description": "CALDERA UI port"
+      }
+    }
+  },
+  "variables": {
+    "$fxv#0": "\r\n#cloud-config\r\n\r\npackage_update: true\r\npackage_upgrade: true\r\npackages:\r\n  - curl\r\n  - ca-certificates\r\n  - git\r\n  - python3\r\n  - python3-venv\r\n  - nodejs\r\n  - npm\r\n  - apt-transport-https\r\n\r\nwrite_files:\r\n  - path: /opt/bootstrap/bootstrap.sh\r\n    permissions: \"0755\"\r\n    content: |\r\n      #!/usr/bin/env bash\r\n      set -euo pipefail\r\n\r\n      LOG_BOOTSTRAP=\"/var/log/bootstrap-bootstrap.log\"\r\n\r\n      SCRIPT_URL=\"https://raw.githubusercontent.com/dloder0/XDROps/main/install.sh\"\r\n\r\n      echo \"[bootstrap] Downloading installer from $SCRIPT_URL\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      mkdir -p /opt/bootstrap\r\n\r\n      curl -fsSL \"$SCRIPT_URL\" -o /opt/bootstrap/install.sh\r\n\r\n      chmod +x /opt/bootstrap/install.sh\r\n\r\n      echo \"[bootstrap] Running installer...\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\n      # Capture ALL output from install script\r\n      /opt/bootstrap/install.sh\r\n\r\n      echo \"[bootstrap] Completed.\" | tee -a \"$LOG_BOOTSTRAP\"\r\n\r\nruncmd:\r\n  - [ bash, -lc, \"/opt/bootstrap/bootstrap.sh\" ]\r\n",
+    "vnetName": "[format('{0}-vnet', parameters('vmName'))]",
+    "subnetName": "default",
+    "nsgName": "[format('{0}-nsg', parameters('vmName'))]",
+    "pipName": "[format('{0}-pip', parameters('vmName'))]",
+    "nicName": "[format('{0}-nic', parameters('vmName'))]",
+    "osDiskName": "[format('{0}-osdisk', parameters('vmName'))]",
+    "cloudInit": "[base64(variables('$fxv#0'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2024-05-01",
+      "name": "[variables('nsgName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "Allow-SSH",
+            "properties": {
+              "priority": 1000,
+              "access": "Allow",
+              "direction": "Inbound",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "Allow-CALDERA",
+            "properties": {
+              "priority": 1010,
+              "access": "[if(parameters('exposeCalderaToInternet'), 'Allow', 'Deny')]",
+              "direction": "Inbound",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "[string(parameters('calderaPort'))]",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2024-05-01",
+      "name": "[variables('vnetName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.10.0.0/16"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('subnetName')]",
+            "properties": {
+              "addressPrefix": "10.10.1.0/24",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+              }
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2024-05-01",
+      "name": "[variables('pipName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2024-05-01",
+      "name": "[variables('nicName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[reference(resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')), '2024-05-01').subnets[0].id]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipName'))]"
+              }
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipName'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2024-07-01",
+      "name": "[parameters('vmName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('vmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "customData": "[variables('cloudInit')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": false
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "ubuntu-24_04-lts",
+            "sku": "server",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[variables('osDiskName')]",
+            "createOption": "FromImage",
+            "caching": "ReadWrite",
+            "managedDisk": {
+              "storageAccountType": "Premium_LRS"
+            }
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "publicIp": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses', variables('pipName')), '2024-05-01').ipAddress]"
+    },
+    "sshCommand": {
+      "type": "string",
+      "value": "[format('ssh {0}@{1}', parameters('adminUsername'), reference(resourceId('Microsoft.Network/publicIPAddresses', variables('pipName')), '2024-05-01').ipAddress)]"
+    },
+    "calderaAccess": {
+      "type": "string",
+      "value": "[if(parameters('exposeCalderaToInternet'), format('http://{0}:{1}', reference(resourceId('Microsoft.Network/publicIPAddresses', variables('pipName')), '2024-05-01').ipAddress, parameters('calderaPort')), format('Not exposed. Use SSH tunnel: ssh -L {0}:localhost:{1} {2}@{3}', parameters('calderaPort'), parameters('calderaPort'), parameters('adminUsername'), reference(resourceId('Microsoft.Network/publicIPAddresses', variables('pipName')), '2024-05-01').ipAddress))]"
+    }
+  }
+}
