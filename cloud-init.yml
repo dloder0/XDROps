@@ -12,6 +12,7 @@ packages:
   - nodejs
   - npm
   - apt-transport-https
+  - jq
 
 write_files:
   - path: /opt/bootstrap/bootstrap.sh
