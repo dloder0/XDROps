@@ -22,7 +22,14 @@ write_files:
 
       LOG_BOOTSTRAP="/var/log/bootstrap.log"
 
-      ZIP_URL="https://raw.githubusercontent.com/dloder0/XDROps/main/XDROps.tar.gz"
+      TARGET="raw.githubusercontent.com"
+      # Loop until DNS resolves
+      while ! getent hosts "$TARGET" >/dev/null 2>&1; do
+        echo "[bootstrap] DNS not ready yet. Retrying... $(date -Is)" | tee -a "$LOG_BOOTSTRAP"
+        sleep 30
+      done
+
+      ZIP_URL="https://aka.ms/XDROpsLabLinux"
 
       echo "[bootstrap] Downloading installer package from $ZIP_URL" | tee -a "$LOG_BOOTSTRAP"
 
